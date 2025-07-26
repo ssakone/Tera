@@ -9,14 +9,17 @@ Assistant CLI intelligent qui utilise GPT-4o pour automatiser les tâches de dé
 npm install
 ```
 
-2. **Configurer votre clé API OpenAI :**
-```bash
-export OPENAI_API_KEY="your-openai-api-key-here"
-```
-
-3. **Installer globalement (optionnel) :**
+2. **Installer globalement :**
 ```bash
 npm run install-global
+# ou
+npm link
+```
+
+3. **Configurer votre clé API OpenAI (optionnel) :**
+```bash
+export OPENAI_API_KEY="your-openai-api-key-here"
+# ou utilisez "tera config" lors de la première utilisation
 ```
 
 ## 🎯 Utilisation
@@ -41,7 +44,58 @@ tera commit
 5. ❓ Demande confirmation (y/n)
 6. 🚀 Effectue le commit si confirmé
 
-### Exemple d'utilisation
+### Commande `change`
+
+Modifie intelligemment un fichier selon vos besoins avec GPT-4o :
+
+```bash
+tera change <file_path> "<description_du_besoin>"
+```
+
+**Exemples :**
+```bash
+# Ajouter une fonction
+tera change app.js "ajouter une fonction pour calculer la moyenne"
+
+# Refactoriser du code
+tera change utils.js "convertir les fonctions en classes ES6"
+
+# Ajouter des commentaires
+tera change main.py "ajouter des docstrings à toutes les fonctions"
+
+# Corriger un problème
+tera change config.json "ajouter le support pour l'environnement de test"
+```
+
+**Options disponibles :**
+- `--no-backup` : Ne pas créer de sauvegarde automatique
+- `-p, --preview` : Affiche un aperçu du contenu modifié après application
+
+**Ce que fait la commande :**
+1. 📁 Vérifie que le fichier existe
+2. 📖 Lit le contenu actuel
+3. 🤖 Envoie le contenu + votre demande à GPT-4o
+4. 🎨 Affiche un diff coloré des modifications proposées
+5. 📊 Montre un résumé des changements
+6. ❓ Demande confirmation (y/n)
+7. 💾 Crée une sauvegarde (sauf si --no-backup)
+8. ✏️ Applique les modifications si confirmé
+
+### Commande `config`
+
+Gère la configuration de Tera :
+
+```bash
+# Configurer/reconfigurer la clé API OpenAI
+tera config
+
+# Afficher la configuration actuelle
+tera config --show
+```
+
+## 🌟 Exemples d'utilisation
+
+### Exemple complet avec `commit`
 
 ```bash
 $ git add package.json bin/tera.js
@@ -70,11 +124,68 @@ Voulez-vous commiter avec ce message ? (y/n) y
 ✅ Commit effectué avec succès !
 ```
 
+### Exemple avec `change`
+
+```bash
+$ tera change app.js "ajouter une fonction de validation email"
+
+📁 Modification de: app.js
+   Chemin: /path/to/app.js
+   Taille: 1250 octets
+
+📖 Lecture du fichier...
+
+🎯 Modification demandée:
+"ajouter une fonction de validation email"
+
+⠋ Génération des modifications avec GPT-4o...
+✅ Modifications générées
+
+ MODIFICATIONS PROPOSÉES POUR app.js 
+────────────────────────────────────────────────────────────────────────────────
+  15 │ 
+  16 │ // Existing functions...
+  17 │ 
++ 18 │ /**
++ 19 │  * Valide une adresse email
++ 20 │  * @param {string} email - L'adresse email à valider
++ 21 │  * @returns {boolean} - True si l'email est valide
++ 22 │  */
++ 23 │ function validateEmail(email) {
++ 24 │   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
++ 25 │   return emailRegex.test(email);
++ 26 │ }
++ 27 │ 
+  28 │ module.exports = {
+- 29 │   // existing exports
++ 29 │   // existing exports
++ 30 │   validateEmail
+  31 │ };
+────────────────────────────────────────────────────────────────────────────────
+
+📊 Résumé des changements:
+  + 8 ligne(s) ajoutée(s)
+  ~ 1 ligne(s) modifiée(s)
+  📏 Total: 25 → 33 lignes
+
+Voulez-vous appliquer ces modifications ? (y/n) y
+
+💾 Création d'une sauvegarde...
+✅ Sauvegarde créée: app.js.backup-2024-01-15T10-30-45-123Z
+✏️  Application des modifications...
+✅ Fichier modifié avec succès !
+📈 Taille: +285 octets
+```
+
 ## ⚙️ Configuration
 
 ### Variables d'environnement
 
-- `OPENAI_API_KEY` (requis) : Votre clé API OpenAI
+- `OPENAI_API_KEY` (optionnel) : Votre clé API OpenAI
+
+### Configuration automatique
+
+Lors de la première utilisation, Tera vous demandera automatiquement votre clé API OpenAI et la sauvegardera de manière sécurisée dans `~/.tera-config.json`.
 
 ### Obtenir une clé API OpenAI
 
@@ -82,15 +193,7 @@ Voulez-vous commiter avec ce message ? (y/n) y
 2. Créez un compte ou connectez-vous
 3. Naviguez vers "API Keys" 
 4. Créez une nouvelle clé API
-5. Exportez-la dans votre shell :
-
-```bash
-# Temporaire (session actuelle)
-export OPENAI_API_KEY="sk-..."
-
-# Permanent (ajoutez à votre ~/.bashrc, ~/.zshrc, etc.)
-echo 'export OPENAI_API_KEY="sk-..."' >> ~/.bashrc
-```
+5. Utilisez `tera config` pour la configurer
 
 ## 🛠️ Développement
 
@@ -102,11 +205,16 @@ tera/
 │   └── tera.js           # Point d'entrée CLI
 ├── lib/
 │   ├── commands/
-│   │   └── commit.js     # Commande commit
+│   │   ├── commit.js     # Commande commit
+│   │   ├── config.js     # Commande config
+│   │   └── change.js     # Commande change
 │   └── utils/
 │       ├── git.js        # Utilitaires git
 │       ├── openai.js     # Intégration OpenAI
-│       └── prompt.js     # Confirmations utilisateur
+│       ├── prompt.js     # Confirmations utilisateur
+│       ├── config.js     # Gestion configuration
+│       ├── file.js       # Gestion fichiers
+│       └── diff.js       # Affichage diffs colorés
 ├── package.json
 └── README.md
 ```
@@ -119,16 +227,22 @@ tera/
 
 ## 🐛 Dépannage
 
-### Erreur "OPENAI_API_KEY est requise"
-- Vérifiez que vous avez exporté votre clé API OpenAI
-- Vérifiez la validité de votre clé
+### Erreur "OPENAI_API_KEY non configurée"
+- Utilisez `tera config` pour configurer votre clé API
+- Ou exportez la variable d'environnement `OPENAI_API_KEY`
 
 ### Erreur "Aucun changement stagé trouvé"
 - Utilisez `git add <fichiers>` avant `tera commit`
 - Vérifiez avec `git status` que vous avez des changements stagés
 
-### Erreur "Vous n'êtes pas dans un repository git"
-- Assurez-vous d'être dans un dossier git (`git init` si nécessaire)
+### Erreur "Le fichier n'existe pas"
+- Vérifiez le chemin du fichier pour `tera change`
+- Utilisez des chemins relatifs ou absolus
+
+### Problèmes de sauvegarde
+- Les sauvegardes sont créées automatiquement avec un timestamp
+- Utilisez `--no-backup` pour désactiver les sauvegardes
+- Les sauvegardes sont exclues du git (voir .gitignore)
 
 ## 📝 License
 

@@ -1,13 +1,27 @@
 {
   "name": "tera",
   "version": "1.0.0",
-  "description": "",
+  "description": "Assistant CLI utilisant GPT-4o pour automatiser les tâches de développement",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "type": "module",
+  "bin": {
+    "tera": "./bin/tera.js"
   },
-  "keywords": [],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-global": "npm install -g ."
+  },
+  "keywords": ["cli", "gpt", "automation", "git", "assistant"],
   "author": "",
   "license": "ISC",
-  "type": "module"
+  "dependencies": {
+    "commander": "^11.1.0",
+    "openai": "^4.20.1",
+    "chalk": "^5.3.0",
+    "ora": "^7.0.1",
+    "inquirer": "^9.2.12",
+    "diff": "^5.1.0",
+    "fuse.js": "^7.0.0",
+    "node-fetch": "^3.3.2"
+  }
 }

@@ -55,4 +55,7 @@ dist/
 build/
 
 # Configuration files (contiennent potentiellement des clés API)
-.tera-config.json 
+.tera-config.json
+
+# Fichiers de sauvegarde créés par tera change
+*.backup-* 
