@@ -30,6 +30,8 @@ program
 program
   .command('commit')
   .description('Génère un message de commit intelligent basé sur les changements git')
+  .option('-a, --add', 'Ajouter tous les changements (git add .) avant de commiter')
+  .option('-y, --yes', 'Accepter automatiquement le message de commit proposé')
   .action(commitCommand);
 
 // Commande config
@@ -60,7 +62,7 @@ program
 
 // Commande agent
 program
-  .command('agent <task>')
+  .command('agent [task]')
   .description('Automatise des tâches de développement avec streaming IA en temps réel')
   .option('--auto', 'Exécution automatique sans confirmation')
   .option('--fast', 'Exécution rapide sans pauses entre les actions')
@@ -110,7 +112,7 @@ program.on('command:*', function (operands) {
   console.log(chalk.blue('  tera config --model') + chalk.gray('       - Change de modèle'));
   console.log(chalk.blue('  tera change <file> <need>') + chalk.gray('  - Modifie un fichier avec l\'IA (sans backup par défaut)'));
   console.log(chalk.blue('  tera review') + chalk.gray('               - Analyse les commits pour détecter les bugs'));
-  console.log(chalk.blue('  tera agent <task>') + chalk.gray('          - Automatise des tâches avec streaming IA'));
+  console.log(chalk.blue('  tera agent [task]') + chalk.gray('          - Automatise des tâches avec streaming IA'));
   console.log(chalk.blue('  tera memory') + chalk.gray('               - Affiche les statistiques de mémoire de l\'agent'));
   console.log(chalk.gray('\n💡 Utilisez "tera <commande> --help" pour plus d\'informations sur une commande.'));
   process.exit(1);
@@ -132,7 +134,7 @@ if (process.argv.length === 2) {
   console.log(chalk.blue('  tera config --model') + chalk.gray('          - Change de modèle'));
   console.log(chalk.blue('  tera change <file> <need>') + chalk.gray('     - Modifie un fichier avec l\'IA'));
   console.log(chalk.blue('  tera review') + chalk.gray('                  - Analyse les commits pour détecter les bugs'));
-  console.log(chalk.blue('  tera agent <task>') + chalk.gray('             - Automatise des tâches avec streaming IA'));
+  console.log(chalk.blue('  tera agent [task]') + chalk.gray('             - Automatise des tâches avec streaming IA (interactif si pas de tâche)'));
   console.log(chalk.blue('  tera memory') + chalk.gray('                   - Affiche les statistiques de mémoire de l\'agent'));
   console.log(chalk.gray('\n💡 Utilisez "tera <commande> --help" pour plus d\'informations.'));
   console.log(chalk.gray('🔗 Documentation: voir le README.md\n'));
@@ -141,12 +143,16 @@ if (process.argv.length === 2) {
   console.log(chalk.gray('  tera config                                       # Configuration initiale'));
   console.log(chalk.gray('  tera config --model                               # Changer de modèle'));
   console.log(chalk.gray('  tera commit                                       # Génère un commit intelligent'));
+  console.log(chalk.gray('  tera commit -a                                    # Git add + commit intelligent'));
+  console.log(chalk.gray('  tera commit -y                                    # Commit intelligent sans confirmation'));
+  console.log(chalk.gray('  tera commit -ay                                   # Git add + commit automatique'));
   console.log(chalk.gray('  tera change app.js "ajouter une fonction test"    # Modifie le fichier app.js'));
   console.log(chalk.gray('  tera change app.js "fix bug" --backup             # Modifie avec sauvegarde'));
   console.log(chalk.gray('  tera review                                       # Analyse le dernier commit'));
   console.log(chalk.gray('  tera review --last 3                             # Analyse les 3 derniers commits'));
   console.log(chalk.gray('  tera review --commit abc123                       # Analyse un commit spécifique'));
   console.log(chalk.gray('  tera review --skip ".gradle,.kt"                  # Ignore les fichiers .gradle et .kt'));
+  console.log(chalk.gray('  tera agent                                         # Mode interactif'));
   console.log(chalk.gray('  tera agent "créer un composant React Button"      # Automatise avec streaming'));
   console.log(chalk.gray('  tera agent "setup projet Node.js" --auto          # Exécution automatique'));
   console.log(chalk.gray('  tera memory                                       # Voir la mémoire de l\'agent'));
