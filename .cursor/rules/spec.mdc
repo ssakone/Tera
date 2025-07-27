@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+
+RULES
+- Be pragmatic, dont print unecessary comment or create unecessary docs *.md files
+- Just do what user ask you
+- Reduce lot of log in the code
