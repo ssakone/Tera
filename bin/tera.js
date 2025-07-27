@@ -64,7 +64,40 @@ program
   .description('Automatise des tâches de développement avec streaming IA en temps réel')
   .option('--auto', 'Exécution automatique sans confirmation')
   .option('--fast', 'Exécution rapide sans pauses entre les actions')
+  .option('--debug', 'Mode debug avec informations détaillées')
   .action(agentCommand);
+
+// Commande memory
+program
+  .command('memory')
+  .description('Affiche les statistiques de la mémoire de l\'agent IA')
+  .option('--clear', 'Réinitialise complètement la mémoire')
+  .action(async (options) => {
+    const { getMemoryManager } = await import('../lib/utils/memory.js');
+    const chalk = (await import('chalk')).default;
+    
+    const memory = getMemoryManager();
+    
+    if (options.clear) {
+      memory.clearMemory();
+      console.log(chalk.green('✅ Mémoire réinitialisée avec succès'));
+      return;
+    }
+    
+    const stats = memory.getMemoryStats();
+    
+    console.log(chalk.blue('🧠 Statistiques de la mémoire de l\'agent IA\n'));
+    console.log(chalk.white('📚 Mémoire épisodique:'), chalk.cyan(`${stats.episodes} épisode(s)`));
+    console.log(chalk.white('🎯 Mémoire sémantique:'), chalk.cyan(`${stats.semanticCategories} catégorie(s)`));
+    console.log(chalk.white('⚡ Mémoire procédurale:'), chalk.cyan(`${stats.procedures} procédure(s)`));
+    console.log(chalk.white('💾 Taille totale:'), chalk.cyan(`${Math.round(stats.memorySize / 1024)} KB`));
+    
+    if (stats.episodes > 0) {
+      console.log(chalk.gray('\n💡 L\'agent se souviendra de ces expériences pour les prochaines tâches similaires.'));
+    } else {
+      console.log(chalk.gray('\n💡 Aucune expérience sauvegardée. L\'agent apprendra en travaillant avec vous.'));
+    }
+  });
 
 // Gestion des erreurs
 program.on('command:*', function (operands) {
@@ -78,6 +111,7 @@ program.on('command:*', function (operands) {
   console.log(chalk.blue('  tera change <file> <need>') + chalk.gray('  - Modifie un fichier avec l\'IA (sans backup par défaut)'));
   console.log(chalk.blue('  tera review') + chalk.gray('               - Analyse les commits pour détecter les bugs'));
   console.log(chalk.blue('  tera agent <task>') + chalk.gray('          - Automatise des tâches avec streaming IA'));
+  console.log(chalk.blue('  tera memory') + chalk.gray('               - Affiche les statistiques de mémoire de l\'agent'));
   console.log(chalk.gray('\n💡 Utilisez "tera <commande> --help" pour plus d\'informations sur une commande.'));
   process.exit(1);
 });
@@ -99,6 +133,7 @@ if (process.argv.length === 2) {
   console.log(chalk.blue('  tera change <file> <need>') + chalk.gray('     - Modifie un fichier avec l\'IA'));
   console.log(chalk.blue('  tera review') + chalk.gray('                  - Analyse les commits pour détecter les bugs'));
   console.log(chalk.blue('  tera agent <task>') + chalk.gray('             - Automatise des tâches avec streaming IA'));
+  console.log(chalk.blue('  tera memory') + chalk.gray('                   - Affiche les statistiques de mémoire de l\'agent'));
   console.log(chalk.gray('\n💡 Utilisez "tera <commande> --help" pour plus d\'informations.'));
   console.log(chalk.gray('🔗 Documentation: voir le README.md\n'));
   
@@ -114,6 +149,8 @@ if (process.argv.length === 2) {
   console.log(chalk.gray('  tera review --skip ".gradle,.kt"                  # Ignore les fichiers .gradle et .kt'));
   console.log(chalk.gray('  tera agent "créer un composant React Button"      # Automatise avec streaming'));
   console.log(chalk.gray('  tera agent "setup projet Node.js" --auto          # Exécution automatique'));
+  console.log(chalk.gray('  tera memory                                       # Voir la mémoire de l\'agent'));
+  console.log(chalk.gray('  tera memory --clear                               # Réinitialiser la mémoire'));
   console.log(chalk.gray('  tera config --switch                              # Change de provider\n'));
   
   process.exit(0);
