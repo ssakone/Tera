@@ -1,7 +1,7 @@
 {
   "name": "tera-cli",
   "version": "1.0.0",
-  "description": "Assistant CLI utilisant l'IA (OpenAI/OpenRouter) pour automatiser les tâches de développement - génération de commits intelligents, modification de fichiers, analyse de code, et agent automatisé",
+  "description": "Assistant CLI utilisant l'IA (OpenAI/OpenRouter/Ollama) pour automatiser les tâches de développement - génération de commits intelligents, modification de fichiers, analyse de code, et agent automatisé",
   "main": "bin/tera.js",
   "type": "module",
   "bin": {
@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "install-global": "npm install -g ."
   },
-  "keywords": ["cli", "ai", "gpt", "openai", "openrouter", "automation", "git", "assistant", "commit", "development", "code-analysis", "streaming"],
+  "keywords": ["cli", "ai", "gpt", "openai", "openrouter", "ollama", "automation", "git", "assistant", "commit", "development", "code-analysis", "streaming"],
   "author": "enokas",
   "license": "ISC",
   "repository": {

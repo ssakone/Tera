@@ -23,7 +23,7 @@ const program = new Command();
 
 program
   .name('tera')
-  .description('Assistant CLI utilisant l\'IA (OpenAI/OpenRouter) pour automatiser les tâches de développement')
+  .description('Assistant CLI utilisant l\'IA (OpenAI/OpenRouter/Ollama) pour automatiser les tâches de développement')
   .version('1.0.0');
 
 // Commande commit
@@ -39,7 +39,7 @@ program
   .command('config')
   .description('Configure les paramètres de Tera (provider et clés API)')
   .option('-s, --show', 'Affiche la configuration actuelle')
-  .option('--switch', 'Change de provider (OpenAI ↔ OpenRouter)')
+  .option('--switch', 'Change de provider (OpenAI ↔ OpenRouter ↔ Ollama)')
   .option('-m, --model', 'Change le modèle du provider actuel')
   .action(configCommand);
 
