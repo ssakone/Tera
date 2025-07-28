@@ -24,7 +24,7 @@ const program = new Command();
 program
   .name('tera')
   .description('Assistant CLI utilisant l\'IA (OpenAI/OpenRouter/Ollama) pour automatiser les tâches de développement')
-  .version('1.0.0');
+  .version('1.1.0');
 
 // Commande commit
 program
