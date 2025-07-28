@@ -64,7 +64,7 @@ program
 program
   .command('agent [task]')
   .description('Automatise des tâches de développement avec streaming IA en temps réel')
-  .option('--auto', 'Exécution automatique sans confirmation')
+  .option('--auto [actions]', 'Exécution automatique sans confirmation. Peut spécifier des actions spécifiques: --auto read_file_lines,run_command')
   .option('--fast', 'Exécution rapide sans pauses entre les actions')
   .option('--debug', 'Mode debug avec informations détaillées')
   .action(agentCommand);
@@ -154,7 +154,9 @@ if (process.argv.length === 2) {
   console.log(chalk.gray('  tera review --skip ".gradle,.kt"                  # Ignore les fichiers .gradle et .kt'));
   console.log(chalk.gray('  tera agent                                         # Mode interactif'));
   console.log(chalk.gray('  tera agent "créer un composant React Button"      # Automatise avec streaming'));
-  console.log(chalk.gray('  tera agent "setup projet Node.js" --auto          # Exécution automatique'));
+  console.log(chalk.gray('  tera agent "setup projet Node.js" --auto          # Exécution automatique complète'));
+  console.log(chalk.gray('  tera agent "debug code" --auto read_file_lines    # Auto-approuve seulement la lecture'));
+  console.log(chalk.gray('  tera agent "deploy" --auto read_file_lines,run_command # Auto-approuve lecture et commandes'));
   console.log(chalk.gray('  tera memory                                       # Voir la mémoire de l\'agent'));
   console.log(chalk.gray('  tera memory --clear                               # Réinitialiser la mémoire'));
   console.log(chalk.gray('  tera config --switch                              # Change de provider\n'));
