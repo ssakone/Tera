@@ -5,13 +5,27 @@
   "main": "bin/tera.js",
   "type": "module",
   "bin": {
-    "tera": "./bin/tera.js"
+    "tera": "bin/tera.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install-global": "npm install -g ."
   },
-  "keywords": ["cli", "ai", "gpt", "openai", "openrouter", "ollama", "automation", "git", "assistant", "commit", "development", "code-analysis", "streaming"],
+  "keywords": [
+    "cli",
+    "ai",
+    "gpt",
+    "openai",
+    "openrouter",
+    "ollama",
+    "automation",
+    "git",
+    "assistant",
+    "commit",
+    "development",
+    "code-analysis",
+    "streaming"
+  ],
   "author": "enokas",
   "license": "ISC",
   "repository": {

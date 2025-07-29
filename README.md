@@ -1,249 +1,434 @@
-# Tera - Assistant CLI avec GPT-4o
-
-Assistant CLI intelligent qui utilise GPT-4o pour automatiser les tâches de développement.
-
-## 🚀 Installation
-
-1. **Installer les dépendances :**
-```bash
-npm install
+████████╗███████╗██████╗  █████╗ 
+╚══██╔══╝██╔════╝██╔══██╗██╔══██╗
+   ██║   █████╗  ██████╔╝███████║
+   ██║   ██╔══╝  ██╔══██╗██╔══██║
+   ██║   ███████╗██║  ██║██║  ██║
+   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
 ```
 
-2. **Installer globalement :**
+# TERA - Intelligent AI Development Assistant
+
+> **T**erminal **E**nhanced **R**obot **A**ssistant
+
+A powerful CLI tool that leverages multiple AI providers (OpenAI, OpenRouter, Ollama) to automate development tasks with intelligent streaming, code analysis, and automated workflows.
+
+[![npm version](https://img.shields.io/npm/v/tera-cli.svg)](https://www.npmjs.com/package/tera-cli)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen.svg)](https://nodejs.org/)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+
+## ✨ Features
+
+- 🤖 **Multi-Provider AI Support**: OpenAI (GPT-4o, GPT-4), OpenRouter (Claude, Gemini, Llama, etc.), Ollama (local models)
+- 📝 **Smart Git Commits**: Automatically generate intelligent commit messages from your staged changes
+- 🔧 **Intelligent File Modification**: Modify any file with natural language instructions
+- 🔍 **Code Review & Analysis**: Detect bugs, security issues, and performance problems in commits
+- 🎯 **Autonomous Agent**: Automate complex development tasks with real-time streaming
+- 🧠 **Persistent Memory**: Agent learns from past experiences to improve future tasks
+- 💬 **Natural Communication**: Chat interface for conversational interactions
+- ⚡ **Dynamic Model Selection**: Fetch and use the latest models from each provider
+- 🎨 **Enhanced Patch System**: Intelligent whitespace handling for reliable code modifications
+
+## 🚀 Quick Start
+
+### Installation
+
 ```bash
-npm run install-global
-# ou
-npm link
+npm install -g tera-cli
 ```
 
-3. **Configurer votre clé API OpenAI (optionnel) :**
+### Configuration
+
 ```bash
-export OPENAI_API_KEY="your-openai-api-key-here"
-# ou utilisez "tera config" lors de la première utilisation
+# First-time setup - configure your AI provider
+tera config
+
+# View current configuration
+tera config --show
+
+# Switch between providers
+tera config --switch
+
+# Change model for current provider
+tera config --model
 ```
 
-## 🎯 Utilisation
+### Supported Providers
 
-### Commande `commit`
+| Provider | Models | Description |
+|----------|--------|-------------|
+| **OpenAI** | GPT-4o, GPT-4, GPT-3.5 | Official OpenAI API with latest models |
+| **OpenRouter** | 200+ models | Access to Claude, Gemini, Llama, and more |
+| **Ollama** | Local models | Run models locally (Llama, Mistral, CodeLlama, etc.) |
 
-Génère automatiquement un message de commit intelligent basé sur vos changements git :
+## 📖 Commands Overview
+
+### 🤖 `tera agent` - Autonomous AI Agent
+
+The crown jewel of TERA - an intelligent agent that can automate complex development tasks with streaming AI.
 
 ```bash
-# D'abord, stagez vos changements
+# Interactive mode
+tera agent
+
+# Execute specific task
+tera agent "create a React component with tests"
+
+# Auto-approve all actions
+tera agent "setup Node.js project" --auto
+
+# Auto-approve specific actions only
+tera agent "fix bugs" --auto read_file_lines,patch_file
+```
+
+**Agent Capabilities:**
+- 📁 File system operations (read, create, modify, organize)
+- 🔧 Code modifications with intelligent patching
+- 💻 Shell command execution with safety checks
+- 🗣️ Natural conversation and status updates
+- 🧠 Memory-based learning from past experiences
+- ⚡ Real-time streaming responses
+
+**Auto-Approval Actions:**
+- `read_file_lines` - Read file contents
+- `list_directory` - List directory contents  
+- `create_file` - Create new files
+- `patch_file` - Modify existing files
+- `run_command` - Execute shell commands
+- `chat`, `greet`, `apologize` - Communication (always auto-approved)
+- `inform_user`, `task_completed` - Status updates (always auto-approved)
+
+### 📝 `tera commit` - Smart Git Commits
+
+Generate intelligent commit messages based on your staged changes.
+
+```bash
+# Basic usage
 git add .
+tera commit
 
-# Puis utilisez tera pour générer le commit
+# Add all changes and commit automatically
+tera commit -a -y
+
+# Interactive commit with preview
 tera commit
 ```
 
-**Ce que fait la commande :**
-1. ✅ Vérifie que vous êtes dans un repository git
-2. 📥 Récupère les changements stagés  
-3. 🤖 Envoie les changements à GPT-4o avec un prompt optimisé
-4. 📝 Affiche le message de commit proposé
-5. ❓ Demande confirmation (y/n)
-6. 🚀 Effectue le commit si confirmé
+**Features:**
+- ✅ Analyzes staged changes with intelligent diff parsing
+- 🎯 Follows conventional commit format (`feat:`, `fix:`, `docs:`, etc.)
+- 🌍 Generates messages in French for natural readability
+- 📊 Provides detailed change summaries
+- ⚡ Supports auto-confirmation with `-y` flag
 
-### Commande `change`
+### 🔧 `tera change` - Intelligent File Modification
 
-Modifie intelligemment un fichier selon vos besoins avec GPT-4o :
+Modify any file using natural language instructions with AI.
 
 ```bash
-tera change <file_path> "<description_du_besoin>"
+# Basic file modification
+tera change app.js "add email validation function"
+
+# With automatic backup
+tera change config.json "add development environment settings" --backup
+
+# Preview changes before applying
+tera change style.css "improve responsive design" --preview
 ```
 
-**Exemples :**
+**Examples:**
 ```bash
-# Ajouter une fonction
-tera change app.js "ajouter une fonction pour calculer la moyenne"
+# Add functionality
+tera change utils.js "add function to format dates"
 
-# Refactoriser du code
-tera change utils.js "convertir les fonctions en classes ES6"
+# Fix issues  
+tera change api.py "fix the authentication bug in login"
 
-# Ajouter des commentaires
-tera change main.py "ajouter des docstrings à toutes les fonctions"
+# Refactor code
+tera change components.tsx "convert to TypeScript with proper types"
 
-# Corriger un problème
-tera change config.json "ajouter le support pour l'environnement de test"
+# Add documentation
+tera change README.md "add installation section with examples"
 ```
 
-**Options disponibles :**
-- `--no-backup` : Ne pas créer de sauvegarde automatique
-- `-p, --preview` : Affiche un aperçu du contenu modifié après application
+### 🔍 `tera review` - Code Analysis & Bug Detection
 
-**Ce que fait la commande :**
-1. 📁 Vérifie que le fichier existe
-2. 📖 Lit le contenu actuel
-3. 🤖 Envoie le contenu + votre demande à GPT-4o
-4. 🎨 Affiche un diff coloré des modifications proposées
-5. 📊 Montre un résumé des changements
-6. ❓ Demande confirmation (y/n)
-7. 💾 Crée une sauvegarde (sauf si --no-backup)
-8. ✏️ Applique les modifications si confirmé
-
-### Commande `config`
-
-Gère la configuration de Tera :
+Analyze commits to detect bugs, security issues, and suggest improvements.
 
 ```bash
-# Configurer/reconfigurer la clé API OpenAI
+# Review latest commit
+tera review
+
+# Review specific commit
+tera review --commit abc123
+
+# Review multiple commits
+tera review --last 3
+
+# Skip certain file types
+tera review --skip ".min.js,.lock"
+```
+
+**Analysis Categories:**
+- 🐛 **Bug Detection**: Logic errors, null pointer issues, type mismatches
+- 🔒 **Security Analysis**: Injection vulnerabilities, data exposure
+- ⚡ **Performance Issues**: Inefficient loops, memory leaks
+- 📚 **Code Quality**: Naming conventions, structure improvements
+- 🛡️ **Error Handling**: Missing try-catch, validation gaps
+
+### ⚙️ `tera config` - Configuration Management
+
+Manage AI providers, models, and settings.
+
+```bash
+# Initial setup
 tera config
 
-# Afficher la configuration actuelle
+# View current settings
 tera config --show
+
+# Switch provider (OpenAI ↔ OpenRouter ↔ Ollama)
+tera config --switch
+
+# Change model for current provider
+tera config --model
+
+# Dynamic model fetching from API
+tera config --model  # Shows live models from your provider
 ```
 
-## 🌟 Exemples d'utilisation
+### 🧠 `tera memory` - Agent Memory System
 
-### Exemple complet avec `commit`
+View and manage the agent's learning memory.
 
 ```bash
-$ git add package.json bin/tera.js
-$ tera commit
+# View memory statistics
+tera memory
 
-📥 Récupération des changements stagés...
-✅ Changements trouvés dans 2 fichier(s):
-   - package.json
-   - bin/tera.js
-
-⠋ Génération du message de commit avec GPT-4o...
-✅ Message de commit généré
-
- MESSAGE DE COMMIT PROPOSÉ 
-┌──────────────────────────────────────────────────┐
-│ feat(cli): ajoute l'assistant CLI tera avec GPT-4o│
-│                                                  │
-│ - Ajoute le script principal CLI avec commander │
-│ - Configure l'intégration OpenAI GPT-4o         │
-│ - Implémente la commande commit intelligente    │
-└──────────────────────────────────────────────────┘
-
-Voulez-vous commiter avec ce message ? (y/n) y
-
-🚀 Commit en cours...
-✅ Commit effectué avec succès !
+# Clear all learned experiences
+tera memory --clear
 ```
 
-### Exemple avec `change`
+## 🛠️ Advanced Usage
+
+### Auto-Approval Modes
+
+Control which actions require confirmation:
 
 ```bash
-$ tera change app.js "ajouter une fonction de validation email"
+# Full automation - approve everything
+tera agent "deploy to production" --auto
 
-📁 Modification de: app.js
-   Chemin: /path/to/app.js
-   Taille: 1250 octets
+# Selective automation - only safe operations
+tera agent "analyze codebase" --auto read_file_lines,list_directory
 
-📖 Lecture du fichier...
-
-🎯 Modification demandée:
-"ajouter une fonction de validation email"
-
-⠋ Génération des modifications avec GPT-4o...
-✅ Modifications générées
-
- MODIFICATIONS PROPOSÉES POUR app.js 
-────────────────────────────────────────────────────────────────────────────────
-  15 │ 
-  16 │ // Existing functions...
-  17 │ 
-+ 18 │ /**
-+ 19 │  * Valide une adresse email
-+ 20 │  * @param {string} email - L'adresse email à valider
-+ 21 │  * @returns {boolean} - True si l'email est valide
-+ 22 │  */
-+ 23 │ function validateEmail(email) {
-+ 24 │   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-+ 25 │   return emailRegex.test(email);
-+ 26 │ }
-+ 27 │ 
-  28 │ module.exports = {
-- 29 │   // existing exports
-+ 29 │   // existing exports
-+ 30 │   validateEmail
-  31 │ };
-────────────────────────────────────────────────────────────────────────────────
-
-📊 Résumé des changements:
-  + 8 ligne(s) ajoutée(s)
-  ~ 1 ligne(s) modifiée(s)
-  📏 Total: 25 → 33 lignes
-
-Voulez-vous appliquer ces modifications ? (y/n) y
-
-💾 Création d'une sauvegarde...
-✅ Sauvegarde créée: app.js.backup-2024-01-15T10-30-45-123Z
-✏️  Application des modifications...
-✅ Fichier modifié avec succès !
-📈 Taille: +285 octets
+# Development workflow automation
+tera agent "fix bugs" --auto read_file_lines,patch_file,run_command
 ```
 
-## ⚙️ Configuration
+### Provider-Specific Features
 
-### Variables d'environnement
+#### OpenAI
+```bash
+# Use latest GPT models with dynamic fetching
+tera config --model  # Shows: gpt-4o, gpt-4o-mini, gpt-4-turbo, etc.
+```
 
-- `OPENAI_API_KEY` (optionnel) : Votre clé API OpenAI
+#### OpenRouter
+```bash
+# Access 200+ models including Claude, Gemini, Llama
+tera config --switch  # Select OpenRouter
+tera config --model   # Browse: claude-3, gemini-pro, llama-3, etc.
+```
 
-### Configuration automatique
+#### Ollama (Local AI)
+```bash
+# Run models locally for privacy/offline use
+tera config --switch  # Select Ollama
+tera config --model   # Shows installed: llama3.2, mistral, codellama, etc.
 
-Lors de la première utilisation, Tera vous demandera automatiquement votre clé API OpenAI et la sauvegardera de manière sécurisée dans `~/.tera-config.json`.
+# Install new models
+ollama pull llama3.2:latest
+tera config --model   # New model appears automatically
+```
 
-### Obtenir une clé API OpenAI
+### Workflow Examples
 
-1. Allez sur [platform.openai.com](https://platform.openai.com)
-2. Créez un compte ou connectez-vous
-3. Naviguez vers "API Keys" 
-4. Créez une nouvelle clé API
-5. Utilisez `tera config` pour la configurer
+#### Daily Development Workflow
+```bash
+# 1. Morning setup - check project status
+tera agent "analyze current project structure and suggest improvements"
 
-## 🛠️ Développement
+# 2. Feature development
+tera agent "implement user authentication with JWT" --auto read_file_lines,create_file
 
-### Structure du projet
+# 3. Code review
+tera review --last 3
+
+# 4. Smart commits
+tera commit -a -y
+```
+
+#### Bug Fixing Workflow
+```bash
+# 1. Identify issues
+tera review
+
+# 2. Fix automatically
+tera agent "fix the security vulnerabilities found in review" --auto patch_file
+
+# 3. Verify fixes
+tera change test.js "add tests for security fixes" --backup
+
+# 4. Commit changes
+tera commit
+```
+
+## 🏗️ Project Structure
 
 ```
-tera/
+tera-cli/
 ├── bin/
-│   └── tera.js           # Point d'entrée CLI
+│   └── tera.js                 # CLI entry point
 ├── lib/
-│   ├── commands/
-│   │   ├── commit.js     # Commande commit
-│   │   ├── config.js     # Commande config
-│   │   └── change.js     # Commande change
-│   └── utils/
-│       ├── git.js        # Utilitaires git
-│       ├── openai.js     # Intégration OpenAI
-│       ├── prompt.js     # Confirmations utilisateur
-│       ├── config.js     # Gestion configuration
-│       ├── file.js       # Gestion fichiers
-│       └── diff.js       # Affichage diffs colorés
-├── package.json
-└── README.md
+│   ├── commands/               # Command implementations
+│   │   ├── agent.js           # Autonomous agent
+│   │   ├── commit.js          # Smart commits  
+│   │   ├── change.js          # File modification
+│   │   ├── review.js          # Code analysis
+│   │   └── config.js          # Configuration
+│   ├── agent_tools/           # Agent capabilities
+│   │   ├── chat.js            # Conversational interface
+│   │   ├── create_file.js     # File creation
+│   │   ├── patch_file.js      # Intelligent file patching
+│   │   ├── read_file.js       # File reading
+│   │   ├── run_command.js     # Shell execution
+│   │   └── inform_user.js     # User communication
+│   └── utils/                 # Core utilities
+│       ├── openai.js          # AI provider integration
+│       ├── config.js          # Configuration management
+│       ├── memory.js          # Agent memory system
+│       ├── models.js          # Dynamic model fetching
+│       ├── git.js             # Git operations
+│       ├── file.js            # File system utilities
+│       ├── diff.js            # Code diff visualization
+│       └── prompt.js          # User interaction
+└── package.json
 ```
 
-### Ajout de nouvelles commandes
+## 🔧 Configuration
 
-1. Créez un nouveau fichier dans `lib/commands/`
-2. Exportez une fonction async
-3. Ajoutez la commande dans `bin/tera.js`
+### Environment Variables
 
-## 🐛 Dépannage
+```bash
+# Optional - can also use tera config
+export OPENAI_API_KEY="sk-..."
+export OPENROUTER_API_KEY="sk-or-..."
+export OLLAMA_BASE_URL="http://localhost:11434/v1"
+```
 
-### Erreur "OPENAI_API_KEY non configurée"
-- Utilisez `tera config` pour configurer votre clé API
-- Ou exportez la variable d'environnement `OPENAI_API_KEY`
+### Configuration File
 
-### Erreur "Aucun changement stagé trouvé"
-- Utilisez `git add <fichiers>` avant `tera commit`
-- Vérifiez avec `git status` que vous avez des changements stagés
+TERA stores settings in `~/.tera-config.json`:
 
-### Erreur "Le fichier n'existe pas"
-- Vérifiez le chemin du fichier pour `tera change`
-- Utilisez des chemins relatifs ou absolus
+```json
+{
+  "provider": "openai",
+  "openai": {
+    "apiKey": "sk-...",
+    "model": "gpt-4o"
+  },
+  "openrouter": {
+    "apiKey": "sk-or-...", 
+    "model": "openai/gpt-4o"
+  },
+  "ollama": {
+    "baseURL": "http://localhost:11434/v1",
+    "model": "llama3.2:latest"
+  }
+}
+```
 
-### Problèmes de sauvegarde
-- Les sauvegardes sont créées automatiquement avec un timestamp
-- Utilisez `--no-backup` pour désactiver les sauvegardes
-- Les sauvegardes sont exclues du git (voir .gitignore)
+### Provider Setup
+
+#### OpenAI Setup
+1. Visit [platform.openai.com](https://platform.openai.com)
+2. Create account and get API key
+3. Run `tera config` and select OpenAI
+
+#### OpenRouter Setup  
+1. Visit [openrouter.ai](https://openrouter.ai)
+2. Create account and get API key
+3. Run `tera config` and select OpenRouter
+4. Access 200+ models including Claude, Gemini, Llama
+
+#### Ollama Setup
+1. Install [Ollama](https://ollama.ai)
+2. Start service: `ollama serve`
+3. Install models: `ollama pull llama3.2`
+4. Run `tera config` and select Ollama
+
+## 🚨 Troubleshooting
+
+### Common Issues
+
+**"API key not configured"**
+```bash
+tera config  # Reconfigure your provider
+```
+
+**"No staged changes found"**
+```bash
+git add .          # Stage your changes first
+tera commit -a     # Or use auto-add flag
+```
+
+**"Model not found"**
+```bash
+tera config --model  # Select from available models
+```
+
+**Ollama connection failed**
+```bash
+ollama serve         # Start Ollama service
+ollama pull llama3.2 # Install a model
+```
+
+**Patch failures due to whitespace**
+- TERA now includes intelligent whitespace handling
+- Use `read_file_lines` in agent mode for precise context
+
+### Debug Mode
+
+```bash
+# Enable detailed logging
+tera agent "debug this issue" --debug
+```
+
+### Memory Issues
+
+```bash
+# Clear agent memory if behavior seems off
+tera memory --clear
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `tera commit` (use TERA itself!)
+4. Push branch: `git push origin feature/amazing-feature`
+5. Open Pull Request
 
 ## 📝 License
 
-ISC 
+ISC License - see [LICENSE](LICENSE) file.
+
+## 🔗 Links
+
+- **GitHub**: [https://github.com/enokas/tera](https://github.com/enokas/tera)
+- **npm**: [https://www.npmjs.com/package/tera-cli](https://www.npmjs.com/package/tera-cli)
+- **Issues**: [https://github.com/enokas/tera/issues](https://github.com/enokas/tera/issues)
+
+---
+
+**Made with ❤️ and AI** - TERA is developed using AI assistance to create better AI tools for developers. 
